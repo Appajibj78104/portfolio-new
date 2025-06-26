@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, Suspense, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Stars, Environment, Sparkles, Float } from '@react-three/drei'
 import { motion } from 'framer-motion'
 // import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing'
@@ -14,6 +14,15 @@ import PlanetInfo from './ui/PlanetInfo'
 import { planets } from '@/constants/planetData'
 import styles from '@/styles/components/SolarSystem.module.scss'
 
+// Simple scaling group component
+const ScaledSolarSystemGroup = ({ scale, children }) => {
+  return (
+    <group scale={[scale, scale, scale]}>
+      {children}
+    </group>
+  )
+}
+
 const SolarSystem = ({ onPlanetClick }) => {
   const [hoveredPlanet, setHoveredPlanet] = useState(null)
   const [deviceType, setDeviceType] = useState('desktop')
@@ -22,7 +31,9 @@ const SolarSystem = ({ onPlanetClick }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
+  const [mobileScale, setMobileScale] = useState(1)
   const controlsRef = useRef()
+  const cameraRef = useRef()
 
   // Enhanced device detection
   useEffect(() => {
@@ -92,6 +103,26 @@ const SolarSystem = ({ onPlanetClick }) => {
 
   // No loading needed - handled by main app
 
+  // Update mobile scale when planet changes
+  useEffect(() => {
+    if (config.isMobileCarousel) {
+      const currentPlanet = getCurrentPlanet()
+      if (currentPlanet) {
+        const newScale = calculateMobileScale(currentPlanet)
+        setMobileScale(newScale)
+
+        // Smoothly adjust camera distance for better viewing
+        if (cameraRef.current && controlsRef.current) {
+          const targetDistance = 30 / newScale // Inverse relationship
+          controlsRef.current.minDistance = targetDistance * 0.5
+          controlsRef.current.maxDistance = targetDistance * 2
+        }
+      } else {
+        setMobileScale(1) // Default scale for sun view
+      }
+    }
+  }, [currentPlanetIndex, config.isMobileCarousel, screenSize])
+
 
 
 
@@ -116,14 +147,9 @@ const SolarSystem = ({ onPlanetClick }) => {
 
   const handleLegendClick = (planetId) => {
     if (config.isMobileCarousel) {
-      // In mobile carousel mode, navigate to the planet
-      const planetIndex = planets.findIndex(p => p.id === planetId)
-      if (planetIndex !== -1) {
-        setCurrentPlanetIndex(planetIndex)
-      } else if (planetId === 'home') {
-        setCurrentPlanetIndex(-1) // Special index for sun/home
-      }
+      // In mobile carousel mode, navigate directly to the section page
       setShowMobileMenu(false)
+      onPlanetClick(planetId)
     } else {
       // Direct navigation to section
       onPlanetClick(planetId)
@@ -150,6 +176,26 @@ const SolarSystem = ({ onPlanetClick }) => {
   const getCurrentPlanet = () => {
     if (currentPlanetIndex === -1) return null // Sun/home
     return planets[currentPlanetIndex]
+  }
+
+  // Calculate optimal scale for mobile to keep orbit visible
+  const calculateMobileScale = (planet) => {
+    if (!planet || !config.isMobileCarousel) return 1
+
+    const maxOrbitRadius = planet.distance
+    const screenWidth = screenSize.width
+    const screenHeight = screenSize.height
+    const minDimension = Math.min(screenWidth, screenHeight)
+
+    // Calculate scale to fit orbit within viewport with padding
+    // Use 70% of screen for very large orbits, 85% for smaller ones
+    const paddingFactor = maxOrbitRadius > 20 ? 0.35 : 0.425 // More aggressive scaling for distant planets
+    const targetSize = minDimension * paddingFactor
+    const scale = targetSize / maxOrbitRadius
+
+    // Clamp scale between 0.08 and 1.2 for reasonable limits
+    // Allow smaller scales for very distant planets
+    return Math.max(0.08, Math.min(1.2, scale))
   }
 
   // Touch/swipe handlers for mobile
@@ -208,6 +254,9 @@ const SolarSystem = ({ onPlanetClick }) => {
         }}
         shadows={!config.isMobile}
         dpr={config.isMobile ? 1 : [1, 2]}
+        onCreated={({ camera }) => {
+          cameraRef.current = camera
+        }}
       >
         <color attach="background" args={['#0a0a0f']} />
         <fog attach="fog" args={['#0a0a0f', 100, 300]} />
@@ -273,11 +322,10 @@ const SolarSystem = ({ onPlanetClick }) => {
             </Float>
           )}
 
-          <Sun onClick={handleSunClick} />
-
           {config.isMobileCarousel ? (
-            // Mobile carousel mode - show only current planet with proper orbit distance
-            <>
+            // Mobile carousel mode with responsive scaling
+            <ScaledSolarSystemGroup scale={mobileScale}>
+              <Sun onClick={handleSunClick} />
               {getCurrentPlanet() && (
                 <group key={getCurrentPlanet().id}>
                   <Orbit
@@ -298,26 +346,30 @@ const SolarSystem = ({ onPlanetClick }) => {
                   />
                 </group>
               )}
-            </>
+            </ScaledSolarSystemGroup>
           ) : (
-            // Desktop mode - show all planets
-            planets.map((planet, index) => (
-              <group key={planet.id}>
-                <Orbit
-                  radius={planet.distance}
-                  color={planet.color}
-                  opacity={0.15 + index * 0.05}
-                />
-                <Planet
-                  planet={planet}
-                  onHover={() => !config.isMobile && handlePlanetHover(planet)}
-                  onLeave={handlePlanetLeave}
-                  onClick={() => handlePlanetClick(planet)}
-                  isMobile={config.isMobile}
-                  deviceType={deviceType}
-                />
-              </group>
-            ))
+            // Desktop mode - no scaling
+            <>
+              <Sun onClick={handleSunClick} />
+              {/* Desktop mode - show all planets */}
+              {planets.map((planet, index) => (
+                <group key={planet.id}>
+                  <Orbit
+                    radius={planet.distance}
+                    color={planet.color}
+                    opacity={0.15 + index * 0.05}
+                  />
+                  <Planet
+                    planet={planet}
+                    onHover={() => !config.isMobile && handlePlanetHover(planet)}
+                    onLeave={handlePlanetLeave}
+                    onClick={() => handlePlanetClick(planet)}
+                    isMobile={config.isMobile}
+                    deviceType={deviceType}
+                  />
+                </group>
+              ))}
+            </>
           )}
 
           <OrbitControls
@@ -411,10 +463,24 @@ const SolarSystem = ({ onPlanetClick }) => {
 
       {/* Mobile Planet Info */}
       {config.isMobileCarousel && getCurrentPlanet() && (
-        <div className={styles.mobilePlanetInfo}>
-          <h3>{getCurrentPlanet().name}</h3>
-          <p>Tap to explore</p>
-        </div>
+        <motion.div
+          className={styles.mobilePlanetInfo}
+          key={getCurrentPlanet().id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <h3 style={{ margin: 0 }}>{getCurrentPlanet().name}</h3>
+            <span style={{ fontSize: '0.9em', opacity: 0.8 }}>
+              {currentPlanetIndex + 1} / {planets.length}
+            </span>
+          </div>
+          <p>Tap to explore • Swipe to navigate</p>
+          <small style={{ opacity: 0.7, fontSize: '0.8em' }}>
+            Distance: {getCurrentPlanet().distance.toFixed(1)} AU • Scale: {mobileScale.toFixed(2)}x
+          </small>
+        </motion.div>
       )}
 
       <div className={styles.instructions}>
