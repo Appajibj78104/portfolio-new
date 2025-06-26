@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
   images: {
     unoptimized: true
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/portfolio-new' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/portfolio-new/' : '',
+  // Remove static export and base path for Vercel deployment
+  experimental: {
+    optimizePackageImports: ['three', '@react-three/fiber', '@react-three/drei']
+  }
 };
 
 export default nextConfig;
