@@ -1,0 +1,139 @@
+.responsiveContainer {
+  width: 100%;
+  margin: 0 auto;
+  
+  // Max width variants
+  &.xs {
+    max-width: var(--container-xs);
+  }
+  
+  &.sm {
+    max-width: var(--container-sm);
+  }
+  
+  &.md {
+    max-width: var(--container-md);
+  }
+  
+  &.lg {
+    max-width: var(--container-lg);
+  }
+  
+  &.xl {
+    max-width: var(--container-xl);
+  }
+  
+  &.xxl {
+    max-width: var(--container-2xl);
+  }
+  
+  &.full {
+    max-width: none;
+  }
+  
+  // Padding variants
+  &.none {
+    padding: 0;
+  }
+  
+  &.small {
+    padding: 0 var(--space-3);
+  }
+  
+  &.default {
+    padding: 0 var(--space-4);
+  }
+  
+  &.large {
+    padding: 0 var(--space-6);
+  }
+  
+  &.xlarge {
+    padding: 0 var(--space-8);
+  }
+}
+
+// Responsive padding adjustments
+@media (max-width: 479px) {
+  .responsiveContainer {
+    &.small {
+      padding: 0 var(--space-2);
+    }
+    
+    &.default {
+      padding: 0 var(--space-3);
+    }
+    
+    &.large {
+      padding: 0 var(--space-4);
+    }
+    
+    &.xlarge {
+      padding: 0 var(--space-5);
+    }
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .responsiveContainer {
+    &.small {
+      padding: 0 var(--space-3);
+    }
+    
+    &.default {
+      padding: 0 var(--space-4);
+    }
+    
+    &.large {
+      padding: 0 var(--space-5);
+    }
+    
+    &.xlarge {
+      padding: 0 var(--space-6);
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .responsiveContainer {
+    &.default {
+      padding: 0 var(--space-5);
+    }
+    
+    &.large {
+      padding: 0 var(--space-6);
+    }
+    
+    &.xlarge {
+      padding: 0 var(--space-8);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsiveContainer {
+    &.default {
+      padding: 0 var(--space-6);
+    }
+    
+    &.large {
+      padding: 0 var(--space-8);
+    }
+    
+    &.xlarge {
+      padding: 0 var(--space-10);
+    }
+  }
+}
+
+@media (min-width: 1920px) {
+  .responsiveContainer {
+    &.large {
+      padding: 0 var(--space-10);
+    }
+    
+    &.xlarge {
+      padding: 0 var(--space-12);
+    }
+  }
+}

@@ -1,0 +1,309 @@
+.sectionDetailView {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.contentPanel {
+  position: relative;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-2xl);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 10;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+}
+
+.content {
+  padding: var(--space-6);
+}
+
+.planetInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.planetIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.planetMeta {
+  flex: 1;
+}
+
+.description {
+  margin-bottom: var(--space-6);
+  line-height: 1.7;
+}
+
+.preview {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--space-blue);
+  
+  h3 {
+    margin-bottom: var(--space-2);
+  }
+  
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.highlights {
+  margin-bottom: var(--space-8);
+  
+  h3 {
+    margin-bottom: var(--space-4);
+  }
+}
+
+.highlightList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.highlightItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(var(--space-1));
+  }
+}
+
+.highlightDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.viewSectionButton {
+  min-width: 200px;
+}
+
+/* Responsive Design */
+@media (max-width: 479px) {
+  .sectionDetailView {
+    padding: var(--space-2);
+  }
+  
+  .contentPanel {
+    max-height: 95vh;
+    border-radius: var(--radius-lg);
+  }
+  
+  .header {
+    padding: var(--space-3) var(--space-4);
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: stretch;
+  }
+  
+  .backButton {
+    order: 2;
+    justify-content: center;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    order: 1;
+  }
+  
+  .content {
+    padding: var(--space-4);
+  }
+  
+  .planetInfo {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-3);
+  }
+  
+  .planetIcon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .preview {
+    padding: var(--space-3);
+  }
+  
+  .highlightList {
+    gap: var(--space-2);
+  }
+  
+  .highlightItem {
+    padding: var(--space-2);
+  }
+  
+  .viewSectionButton {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .sectionDetailView {
+    padding: var(--space-3);
+  }
+  
+  .header {
+    padding: var(--space-4) var(--space-5);
+  }
+  
+  .content {
+    padding: var(--space-5);
+  }
+  
+  .planetInfo {
+    gap: var(--space-3);
+  }
+  
+  .planetIcon {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contentPanel {
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contentPanel {
+    max-width: 900px;
+  }
+  
+  .content {
+    padding: var(--space-8);
+  }
+  
+  .planetIcon {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (orientation: landscape) and (max-height: 600px) {
+  .contentPanel {
+    max-height: 85vh;
+  }
+  
+  .header {
+    padding: var(--space-2) var(--space-4);
+  }
+  
+  .content {
+    padding: var(--space-4);
+  }
+  
+  .planetInfo {
+    margin-bottom: var(--space-4);
+  }
+  
+  .preview {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3);
+  }
+  
+  .highlights {
+    margin-bottom: var(--space-4);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .contentPanel {
+    border: 2px solid var(--text-light);
+    background: var(--space-black);
+  }
+  
+  .backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  .preview {
+    border: 1px solid var(--text-dim);
+  }
+}

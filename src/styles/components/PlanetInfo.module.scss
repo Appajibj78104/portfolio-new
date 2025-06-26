@@ -1,0 +1,30 @@
+.planetInfo {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 300px;
+  z-index: 10;
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+  
+  .clickPrompt {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.7;
+    animation: pulse 1.5s infinite;
+  }
+} 

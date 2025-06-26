@@ -1,0 +1,20 @@
+{
+  "name": "Appaji B - Portfolio",
+  "short_name": "Appaji Portfolio",
+  "description": "Personal portfolio website of Appaji B, showcasing skills, projects, and experience.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#3366ff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["portfolio", "developer", "technology"],
+  "lang": "en",
+  "dir": "ltr"
+}

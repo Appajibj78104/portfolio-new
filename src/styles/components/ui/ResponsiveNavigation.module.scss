@@ -1,0 +1,202 @@
+.menuButton {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target-comfortable);
+  height: var(--touch-target-comfortable);
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--space-blue);
+    outline-offset: 2px;
+  }
+}
+
+.backButton {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 100;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(350px, 85vw);
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  
+  .menuHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--text-light);
+      margin: 0;
+    }
+    
+    .closeButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--touch-target-min);
+      height: var(--touch-target-min);
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+      }
+      
+      &:focus-visible {
+        outline: 2px solid var(--space-blue);
+        outline-offset: 2px;
+      }
+    }
+  }
+  
+  .menuContent {
+    flex: 1;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    overflow-y: auto;
+    
+    .menuItem {
+      width: 100%;
+      justify-content: flex-start;
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      
+      .sectionDot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: var(--space-3);
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 479px) {
+  .menuButton {
+    top: var(--space-3);
+    right: var(--space-3);
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+  }
+
+  .backButton {
+    top: var(--space-3);
+    left: var(--space-3);
+  }
+
+  .mobileMenu {
+    width: 100vw;
+
+    .menuHeader {
+      padding: var(--space-3);
+
+      h3 {
+        font-size: var(--text-base);
+      }
+    }
+
+    .menuContent {
+      padding: var(--space-3);
+
+      .menuItem {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--text-sm);
+
+        .sectionDot {
+          width: 10px;
+          height: 10px;
+          margin-right: var(--space-2);
+        }
+      }
+    }
+  }
+}
+
+// Landscape orientation on mobile
+@media (orientation: landscape) and (max-height: 600px) {
+  .menuButton {
+    top: var(--space-2);
+    right: var(--space-2);
+  }
+
+  .backButton {
+    top: var(--space-2);
+    left: var(--space-2);
+  }
+
+  .mobileMenu {
+    .menuHeader {
+      padding: var(--space-2) var(--space-3);
+
+      h3 {
+        font-size: var(--text-sm);
+      }
+    }
+
+    .menuContent {
+      padding: var(--space-2) var(--space-3);
+      gap: var(--space-1);
+
+      .menuItem {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--text-xs);
+        min-height: var(--touch-target-min);
+      }
+    }
+  }
+}

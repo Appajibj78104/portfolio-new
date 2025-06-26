@@ -1,0 +1,155 @@
+.responsiveButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  
+  // Touch-friendly sizing
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  
+  // Focus styles for accessibility
+  &:focus-visible {
+    outline: 2px solid var(--space-blue);
+    outline-offset: 2px;
+  }
+  
+  // Disabled state
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  // Variants
+  &.primary {
+    background: linear-gradient(135deg, var(--space-blue), var(--space-purple));
+    color: var(--text-light);
+    border: 2px solid transparent;
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #4d7aff, #8052d9);
+      box-shadow: 0 8px 25px rgba(51, 102, 255, 0.3);
+    }
+  }
+  
+  &.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  &.outline {
+    background: transparent;
+    color: var(--space-blue);
+    border: 2px solid var(--space-blue);
+    
+    &:hover:not(:disabled) {
+      background: var(--space-blue);
+      color: var(--text-light);
+      box-shadow: 0 5px 15px rgba(51, 102, 255, 0.3);
+    }
+  }
+  
+  &.ghost {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid transparent;
+    
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  // Sizes
+  &.small {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    min-height: var(--touch-target-min);
+  }
+  
+  &.medium {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-base);
+    min-height: var(--touch-target-comfortable);
+  }
+  
+  &.large {
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--text-lg);
+    min-height: 56px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 479px) {
+  .responsiveButton {
+    &.small {
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-xs);
+    }
+    
+    &.medium {
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--text-sm);
+    }
+    
+    &.large {
+      padding: var(--space-3) var(--space-5);
+      font-size: var(--text-base);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsiveButton {
+    &.large {
+      padding: var(--space-5) var(--space-8);
+      font-size: var(--text-xl);
+      min-height: 64px;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .responsiveButton {
+    &.primary {
+      border-color: var(--text-light);
+    }
+    
+    &.secondary {
+      border-color: var(--text-light);
+      background: var(--space-dark);
+    }
+    
+    &.outline {
+      border-width: 3px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .responsiveButton {
+    transition: none;
+  }
+}
